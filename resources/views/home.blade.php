@@ -15,17 +15,19 @@
             </div>
         </div>
 
-        @foreach ($pawis as $pawi)
+        @forelse ($pawis as $pawi)
         <div class="card bg-base-100 shadow mt-8">
             <div class="card-body">
                 <div>
-                    <div class="font-semibold">{{ $pawi['author'] }}</div>
-                    <div class="mt-2">{{ $pawi['message'] }}</div>
-                    <div class="text-sm text-base-content/60 mt-4">{{ $pawi['time'] }}</div>
+                    <div class="font-semibold">{{ $pawi->user ? $pawi->user->name : 'Anonymous' }}</div>
+                    <div class="mt-2">{{ $pawi->message }}</div>
+                    <div class="text-sm text-base-content/60 mt-4">{{ $pawi->created_at->diffForHumans() }}</div>
                 </div>
             </div>
         </div>
-        @endforeach
+        @empty
+            <p class="text-gray-500">No pawis yet. Be the first to share your pawi!</p>
+        @endforelse
 
     </div>
 </x-layout>
