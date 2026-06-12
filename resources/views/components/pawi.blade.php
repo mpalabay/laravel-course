@@ -19,12 +19,34 @@
                 </div>
             @endif
 
-            <div class="min-w-0">
-                <div class="flex items-center gap-1">
-                    <span class="text-sm font-semibold">{{ $pawi->user ? $pawi->user->name : 'Anonymous' }}</span>
-                    <span class="text-base-content/60">·</span>
-                    <span class="text-sm text-base-content/60">{{ $pawi->created_at->diffForHumans() }}</span>
+            <div class="min-w-0 flex-1">
+                <div class="flex justify-between w-full">
+
+                    <div class="flex items-center gap-1">
+                        <span class="text-sm font-semibold">{{ $pawi->user ? $pawi->user->name : 'Anonymous' }}</span>
+                        <span class="text-base-content/60">·</span>
+                        <span class="text-sm text-base-content/60">{{ $pawi->created_at->diffForHumans() }}</span>
+                        @if ($pawi->updated_at->gt($pawi->created_at->addSeconds(5)))
+                            <span class="text-base-content/60">·</span>
+                            <span class="text-sm text-base-content/60 italic">edited</span>
+                        @endif
+                    </div>
+    
+                    <div class="flex gap-1">
+                        <a href="/pawis/{{ $pawi->id }}/edit" class="btn btn-ghost btn-xs">
+                            Edit
+                        </a>
+                        <form method="POST" action="/pawis/{{ $pawi->id }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this pawi?')"
+                                class="btn btn-ghost btn-xs text-error">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
                 </div>
+
 
                 <p class="mt-1">
                     {{ $pawi->message }}
