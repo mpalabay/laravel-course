@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PawiController;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [PawiController::class, 'index']);
