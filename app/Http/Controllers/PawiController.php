@@ -31,7 +31,17 @@ class PawiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+
+        \App\Models\Pawi::create([
+            'message' => $validated['message'],
+            'user_id' => null,
+        ]);
+
+        return redirect('/')->with('success', 'Your Pawi has been posted!');
+
     }
 
     /**
