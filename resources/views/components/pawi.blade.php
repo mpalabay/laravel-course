@@ -33,17 +33,20 @@
                     </div>
     
                     <div class="flex gap-1">
-                        <a href="/pawis/{{ $pawi->id }}/edit" class="btn btn-ghost btn-xs">
-                            Edit
-                        </a>
-                        <form method="POST" action="/pawis/{{ $pawi->id }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('Are you sure you want to delete this pawi?')"
-                                class="btn btn-ghost btn-xs text-error">
-                                Delete
-                            </button>
-                        </form>
+                        @can('update', $pawi)
+                            
+                            <a href="/pawis/{{ $pawi->id }}/edit" class="btn btn-ghost btn-xs">
+                                Edit
+                            </a>
+                            <form method="POST" action="/pawis/{{ $pawi->id }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" onclick="return confirm('Are you sure you want to delete this pawi?')"
+                                    class="btn btn-ghost btn-xs text-error">
+                                    Delete
+                                </button>
+                            </form>
+                        @endcan
                     </div>
                 </div>
 

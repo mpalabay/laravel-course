@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pawi;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class PawiController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -35,13 +37,9 @@ class PawiController extends Controller
             'message' => 'required|string|max:255',
         ]);
 
-        Pawi::create([
-            'message' => $validated['message'],
-            'user_id' => null,
-        ]);
+        auth()->user()->pawis()->create($validated);
 
         return redirect('/')->with('success', 'Your Pawi has been posted!');
-
     }
 
     /**
@@ -57,6 +55,8 @@ class PawiController extends Controller
      */
     public function edit(Pawi $pawi)
     {
+        $this->authorize('update', $pawi);
+
         return view('pawis.edit', compact('pawi'));
     }
 
@@ -65,6 +65,8 @@ class PawiController extends Controller
      */
     public function update(Request $request, Pawi $pawi)
     {
+        $this->authorize('update', $pawi);
+
         $validated = $request->validate([
             'message' => 'required|string|max:255',
         ]);
@@ -79,8 +81,10 @@ class PawiController extends Controller
      */
     public function destroy(Pawi $pawi)
     {
-        $pawi->delete();
-        return redirect('/')->with('success', 'Your Pawi has been deleted!');
+        $this->authorize('delete', $pawi);
 
+        $pawi->delete();
+
+        return redirect('/')->with('success', 'Your Pawi has been deleted!');
     }
 }
